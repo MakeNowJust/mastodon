@@ -5,10 +5,14 @@ import { Link } from 'react-router-dom';
 const ColumnLink = ({ icon, text, to, href, method, badge }) => {
   const badgeElement = typeof badge !== 'undefined' ? <span className='column-link__badge'>{badge}</span> : null;
 
+  const iconElem = fontGrandOrder ?
+    (<i className={`fgo fgo-${icon} column-link__icon`} />) :
+    (<i className={`fa fa-fw fa-${icon} column-link__icon`} />);
+
   if (href) {
     return (
       <a href={href} className='column-link' data-method={method}>
-        <i className={`fa fa-fw fa-${icon} column-link__icon`} />
+        {iconElem}
         {text}
         {badgeElement}
       </a>
@@ -16,7 +20,7 @@ const ColumnLink = ({ icon, text, to, href, method, badge }) => {
   } else {
     return (
       <Link to={to} className='column-link'>
-        <i className={`fa fa-fw fa-${icon} column-link__icon`} />
+        {iconElem}
         {text}
         {badgeElement}
       </Link>
@@ -31,6 +35,7 @@ ColumnLink.propTypes = {
   href: PropTypes.string,
   method: PropTypes.string,
   badge: PropTypes.node,
+  fontGrandOrder: PropTypes.bool
 };
 
 export default ColumnLink;
