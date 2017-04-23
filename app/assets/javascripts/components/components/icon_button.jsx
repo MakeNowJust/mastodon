@@ -51,6 +51,11 @@ class IconButton extends React.PureComponent {
       classes.push(this.props.className)
     }
 
+    let prefix = 'fa fa-fw fa-';
+    if (this.props.fontGrandOrder) {
+      prefix = 'fgo fgo-';
+    }
+
     return (
       <Motion defaultStyle={{ rotate: this.props.active ? -360 : 0 }} style={{ rotate: this.props.animate ? spring(this.props.active ? -360 : 0, { stiffness: 120, damping: 7 }) : 0 }}>
         {({ rotate }) =>
@@ -60,7 +65,7 @@ class IconButton extends React.PureComponent {
             className={classes.join(' ')}
             onClick={this.handleClick}
             style={style}>
-            <i style={{ transform: `rotate(${rotate}deg)` }} className={`fa fa-fw fa-${this.props.icon}`} aria-hidden='true' />
+            <i style={{ transform: `rotate(${rotate}deg)` }} className={`${prefix}${this.props.icon}`} aria-hidden='true' />
           </button>
         }
       </Motion>
@@ -81,7 +86,8 @@ IconButton.propTypes = {
   disabled: PropTypes.bool,
   inverted: PropTypes.bool,
   animate: PropTypes.bool,
-  overlay: PropTypes.bool
+  overlay: PropTypes.bool,
+  fontGrandOrder: PropTypes.bool
 };
 
 IconButton.defaultProps = {

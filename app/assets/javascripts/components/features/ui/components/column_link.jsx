@@ -1,18 +1,21 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
-const ColumnLink = ({ icon, text, to, href, method, hideOnMobile }) => {
+const ColumnLink = ({ icon, text, to, href, method, hideOnMobile, fontGrandOrder }) => {
+  const iconElem = fontGrandOrder ?
+    (<i className={`fgo fgo-${icon} column-link__icon`} />) :
+    (<i className={`fa fa-fw fa-${icon} column-link__icon`} />)
   if (href) {
     return (
       <a href={href} className={`column-link ${hideOnMobile ? 'hidden-on-mobile' : ''}`} data-method={method}>
-        <i className={`fa fa-fw fa-${icon} column-link__icon`} />
+        {iconElem}
         {text}
       </a>
     );
   } else {
     return (
       <Link to={to} className={`column-link ${hideOnMobile ? 'hidden-on-mobile' : ''}`}>
-        <i className={`fa fa-fw fa-${icon} column-link__icon`} />
+        {iconElem}
         {text}
       </Link>
     );
@@ -25,7 +28,8 @@ ColumnLink.propTypes = {
   to: PropTypes.string,
   href: PropTypes.string,
   method: PropTypes.string,
-  hideOnMobile: PropTypes.bool
+  hideOnMobile: PropTypes.bool,
+  fontGrandOrder: PropTypes.bool
 };
 
 export default ColumnLink;

@@ -52,14 +52,14 @@ class Column extends React.PureComponent {
   }
 
   render () {
-    const { heading, icon, children, active, hideHeadingOnMobile } = this.props;
+    const { heading, icon, children, active, hideHeadingOnMobile, fontGrandOrder } = this.props;
 
     let columnHeaderId = null
     let header = '';
 
     if (heading) {
       columnHeaderId = heading.replace(/ /g, '-')
-      header = <ColumnHeader icon={icon} active={active} type={heading} onClick={this.handleHeaderClick} hideOnMobile={hideHeadingOnMobile} columnHeaderId={columnHeaderId}/>;
+      header = <ColumnHeader icon={icon} fontGrandOrder={fontGrandOrder} active={active} type={heading} onClick={this.handleHeaderClick} hideOnMobile={hideHeadingOnMobile} columnHeaderId={columnHeaderId}/>;
     }
     return (
       <div role='region' aria-labelledby={columnHeaderId} className='column' onWheel={this.handleWheel}>
@@ -76,7 +76,8 @@ Column.propTypes = {
   icon: PropTypes.string,
   children: PropTypes.node,
   active: PropTypes.bool,
-  hideHeadingOnMobile: PropTypes.bool
+  hideHeadingOnMobile: PropTypes.bool,
+  fontGrandOrder: PropTypes.bool
 };
 
 export default Column;

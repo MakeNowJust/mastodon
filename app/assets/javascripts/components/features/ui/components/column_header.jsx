@@ -17,7 +17,11 @@ class ColumnHeader extends React.PureComponent {
     let icon = '';
 
     if (this.props.icon) {
-      icon = <i className={`fa fa-fw fa-${this.props.icon} column-header__icon`} />;
+      if (this.props.fontGrandOrder) {
+        icon = <i className={`fgo fgo-${this.props.icon}`} />;
+      } else {
+        icon = <i className={`fa fa-fw fa-${this.props.icon} column-header__icon`} />;
+      }
     }
 
     return (
@@ -36,7 +40,8 @@ ColumnHeader.propTypes = {
   active: PropTypes.bool,
   onClick: PropTypes.func,
   hideOnMobile: PropTypes.bool,
-  columnHeaderId: PropTypes.string
+  columnHeaderId: PropTypes.string,
+  fontGrandOrder: PropTypes.bool,
 };
 
 export default ColumnHeader;
