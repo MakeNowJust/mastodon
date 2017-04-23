@@ -539,9 +539,9 @@ ja:
         other: "新しい%{count}件の通知 \U0001F418"
       title: 不在の間に…
     favourite:
-      body: "%{name} さんにお気に入り登録された、あなたのトゥートがあります:"
-      subject: "%{name} さんにお気に入りに登録されました"
-      title: 新たなお気に入り登録
+      body: "%{name} さんに与謝野晶子登録された、あなたのトゥートがあります:"
+      subject: "%{name} さんに与謝野晶子登録されました"
+      title: 新たな与謝野晶子登録
     follow:
       body: "%{name} さんにフォローされています！"
       subject: "%{name} さんにフォローされています"
