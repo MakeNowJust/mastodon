@@ -3,6 +3,7 @@
 class Api::SalmonController < Api::BaseController
   include SignatureVerification
 
+  before_action :raise_not_found
   before_action :set_account
   respond_to :txt
 

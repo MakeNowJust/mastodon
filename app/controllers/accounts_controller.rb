@@ -7,6 +7,8 @@ class AccountsController < ApplicationController
 
   before_action :set_cache_headers
 
+  before_action :authenticate_user!
+
   def show
     respond_to do |format|
       format.html do

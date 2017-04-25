@@ -6,6 +6,7 @@ class StreamEntriesController < ApplicationController
 
   layout 'public'
 
+  before_action :authenticate_user!
   before_action :set_account
   before_action :set_stream_entry
   before_action :set_link_headers

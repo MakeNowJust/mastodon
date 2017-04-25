@@ -3,6 +3,7 @@
 module WellKnown
   class WebfingerController < ActionController::Base
     include RoutingHelper
+    before_action :raise_not_found
 
     before_action { response.headers['Vary'] = 'Accept' }
 

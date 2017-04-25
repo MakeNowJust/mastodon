@@ -2,6 +2,7 @@
 
 class Api::PushController < Api::BaseController
   include SignatureVerification
+  before_action :raise_not_found
 
   def update
     response, status = process_push_request

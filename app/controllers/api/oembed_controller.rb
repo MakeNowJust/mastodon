@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Api::OEmbedController < Api::BaseController
+  before_action :raise_not_found
   respond_to :json
 
   def show

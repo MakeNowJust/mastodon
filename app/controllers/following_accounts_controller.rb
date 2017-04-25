@@ -3,6 +3,8 @@
 class FollowingAccountsController < ApplicationController
   include AccountControllerConcern
 
+  before_action :authenticate_user!
+
   def index
     @follows = Follow.where(account: @account).recent.page(params[:page]).per(FOLLOW_PER_PAGE).preload(:target_account)
 
