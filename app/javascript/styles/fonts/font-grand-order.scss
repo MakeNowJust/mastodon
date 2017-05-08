@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'Font-Grand-Order';
-  src: font-url('font-grand-order/Font-Grand-Order.eot?vnc37s');
-  src: font-url('font-grand-order/Font-Grand-Order.eot?vnc37s#iefix') format('embedded-opentype'),
-    font-url('font-grand-order/Font-Grand-Order.ttf?vnc37s') format('truetype'),
-    font-url('font-grand-order/Font-Grand-Order.woff?vnc37s') format('woff'),
-    font-url('font-grand-order/Font-Grand-Order.svg?vnc37s#Font-Grand-Order') format('svg');
+  src: url('../fonts/font-grand-order/Font-Grand-Order.eot?vnc37s');
+  src: url('../fonts/font-grand-order/Font-Grand-Order.eot?vnc37s#iefix') format('embedded-opentype'),
+    url('../fonts/font-grand-order/Font-Grand-Order.ttf?vnc37s') format('truetype'),
+    url('../fonts/font-grand-order/Font-Grand-Order.woff?vnc37s') format('woff'),
+    url('../fonts/font-grand-order/Font-Grand-Order.svg?vnc37s#Font-Grand-Order') format('svg');
   font-weight: normal;
   font-style: normal;
 }
