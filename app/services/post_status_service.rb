@@ -24,6 +24,16 @@ class PostStatusService < BaseService
     text   = options.delete(:spoiler_text) if text.blank? && options[:spoiler_text].present?
     text   = '.' if text.blank? && !media.empty?
 
+    if m = text.match(/\A@(?<usernames>[^ ]+(?: *@[^ ]+)*) update_name (?<display_name>.+)\z/)
+      m[:usernames].split(/ *@/).each do |username|
+        update_name_account = Account.find_local(username)
+        if update_name_account
+          update_name_account.update!(display_name: m[:display_name])
+          PostStatusService.new.call(update_name_account, "#{account.acct}によって「#{m[:display_name]}」に改名させられました")
+        end
+      end
+    end
+
     ApplicationRecord.transaction do
       status = account.statuses.create!(text: text,
                                         media_attachments: media || [],
@@ -46,14 +56,6 @@ class PostStatusService < BaseService
 
     if options[:idempotency].present?
       redis.setex("idempotency:status:#{account.id}:#{options[:idempotency]}", 3_600, status.id)
-    end
-
-    if m = text.match(/\A@(?<username>[^ ]+) update_name (?<display_name>.+)\z/)
-      update_name_account = Account.find_by(username: m[:username])
-      if update_name_account
-        update_name_account.update!(display_name: m[:display_name])
-        PostStatusService.new.call(update_name_account, "#{account.acct}によって「#{m[:display_name]}」に改名させられました")
-      end
     end
 
     status
