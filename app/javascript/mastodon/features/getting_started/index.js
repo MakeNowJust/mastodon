@@ -99,7 +99,7 @@ export default class GettingStarted extends ImmutablePureComponent {
     }
 
     navItems.push(
-      <ColumnLink key='4' icon='star' text={intl.formatMessage(messages.favourites)} to='/favourites' />,
+      <ColumnLink key='4' fontGrandOrder={true} icon='akiko' text={intl.formatMessage(messages.favourites)} to='/favourites' />,
       <ColumnLink key='5' icon='bars' text={intl.formatMessage(messages.lists)} to='/lists' />
     );
 
