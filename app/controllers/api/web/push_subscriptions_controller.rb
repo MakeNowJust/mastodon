@@ -3,6 +3,7 @@
 class Api::Web::PushSubscriptionsController < Api::BaseController
   respond_to :json
 
+  before_action :raise_not_found
   before_action :require_user!
   protect_from_forgery with: :exception
 
