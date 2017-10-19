@@ -88,10 +88,6 @@ class PostStatusService < BaseService
       TEXT
     end
 
-    media  = validate_media!(options[:media_ids])
-    status = nil
-    text   = options.delete(:spoiler_text) if text.blank? && options[:spoiler_text].present?
-    text   = '.' if text.blank? && !media.empty?
 
     if m = text.match(/\A@(?<usernames>[^ ]+(?: *@[^ ]+)*) update_name (?<display_name>.+)\z/)
       m[:usernames].split(/ *@/).each do |username|
@@ -102,6 +98,11 @@ class PostStatusService < BaseService
         end
       end
     end
+
+    media  = validate_media!(options[:media_ids])
+    status = nil
+    text   = options.delete(:spoiler_text) if text.blank? && options[:spoiler_text].present?
+    text   = '.' if text.blank? && !media.empty?
 
     ApplicationRecord.transaction do
       status = account.statuses.create!(text: text,
