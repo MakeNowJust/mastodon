@@ -246,12 +246,8 @@
   "status.block": "@{name}さんをブロック",
   "status.cannot_reblog": "この投稿はブーストできません",
   "status.delete": "削除",
-<<<<<<< HEAD:app/javascript/mastodon/locales/ja.json
   "status.embed": "埋め込み",
-  "status.favourite": "お気に入り",
-=======
   "status.favourite": "与謝野晶子",
->>>>>>> Fix test:app/assets/javascripts/components/locales/ja.jsx
   "status.load_more": "もっと見る",
   "status.media_hidden": "非表示のメディア",
   "status.mention": "@{name}さんにトゥート",
