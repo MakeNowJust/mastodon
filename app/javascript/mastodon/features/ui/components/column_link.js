@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const ColumnLink = ({ icon, text, to, href, method, badge }) => {
+<<<<<<< HEAD
+const ColumnLink = ({ icon, text, to, href, method, badge, fontGrandOrder }) => {
   const badgeElement = typeof badge !== 'undefined' ? <span className='column-link__badge'>{badge}</span> : null;
 
   const iconElem = fontGrandOrder ?
