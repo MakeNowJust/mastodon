@@ -22,6 +22,7 @@ export default class IconButton extends React.PureComponent {
     animate: PropTypes.bool,
     overlay: PropTypes.bool,
     tabIndex: PropTypes.string,
+    fontGrandOrder: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -63,6 +64,7 @@ export default class IconButton extends React.PureComponent {
       pressed,
       tabIndex,
       title,
+      fontGrandOrder,
     } = this.props;
 
     const classes = classNames(className, 'icon-button', {
@@ -71,6 +73,8 @@ export default class IconButton extends React.PureComponent {
       inverted,
       overlayed: overlay,
     });
+
+    const iconClass = fontGrandOrder ? `fgo fgo-${icon}` : `fa fa-fw fa-${icon}`;
 
     if (!animate) {
       // Perf optimization: avoid unnecessary <Motion> components unless
@@ -86,7 +90,7 @@ export default class IconButton extends React.PureComponent {
           style={style}
           tabIndex={tabIndex}
         >
-          <i className={`fa fa-fw fa-${icon}`} aria-hidden='true' />
+          <i className={iconClass} aria-hidden='true' />
         </button>
       );
     }
@@ -104,7 +108,7 @@ export default class IconButton extends React.PureComponent {
             style={style}
             tabIndex={tabIndex}
           >
-            <i style={{ transform: `rotate(${rotate}deg)` }} className={`fa fa-fw fa-${icon}`} aria-hidden='true' />
+            <i style={{ transform: `rotate(${rotate}deg)` }} className={iconClass} aria-hidden='true' />
           </button>
         )}
       </Motion>
