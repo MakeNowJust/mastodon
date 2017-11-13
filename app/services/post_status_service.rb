@@ -88,6 +88,28 @@ class PostStatusService < BaseService
       TEXT
     end
 
+    if text == "/kys"
+      zks = []
+      zun = 0
+
+      n = 247.times do |i|
+        zks << %w(ズン ドコ).sample
+        if zks.last == "ズン"
+          zun += 1
+        elsif zks.last == "ドコ" && zun >= 4
+          zks << "キ・ヨ・シ！"
+          break i
+        else
+          zun = 0
+        end
+      end
+
+      if n == 247
+        text = "マ・ツ・モ・ト・キ・ヨ・シ！"
+      else
+        text = zks.join
+      end
+    end
 
     if m = text.match(/\A@(?<usernames>[^ ]+(?: *@[^ ]+)*) update_name (?<display_name>.+)\z/)
       m[:usernames].split(/ *@/).each do |username|
