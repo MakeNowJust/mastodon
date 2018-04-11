@@ -173,15 +173,9 @@
   "notifications.clear": "通知を消去",
   "notifications.clear_confirmation": "本当に通知を消去しますか？",
   "notifications.column_settings.alert": "デスクトップ通知",
-<<<<<<< HEAD
-  "notifications.column_settings.favourite": "お気に入り:",
-  "notifications.column_settings.follow": "新しいフォロワー:",
-  "notifications.column_settings.mention": "返信:",
-=======
   "notifications.column_settings.favourite": "与謝野晶子",
   "notifications.column_settings.follow": "新しいフォロワー",
   "notifications.column_settings.mention": "返信",
->>>>>>> Fix test
   "notifications.column_settings.push": "プッシュ通知",
   "notifications.column_settings.push_meta": "このデバイス",
   "notifications.column_settings.reblog": "ブースト:",
