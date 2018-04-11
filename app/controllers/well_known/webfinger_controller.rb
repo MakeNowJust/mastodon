@@ -2,7 +2,6 @@
 
 module WellKnown
   class WebfingerController < ActionController::Base
-  class WebfingerController < ApplicationController
     include RoutingHelper
 
     before_action { response.headers['Vary'] = 'Accept' }
