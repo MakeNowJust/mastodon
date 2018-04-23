@@ -2,7 +2,7 @@
 
 class Api::V1::Timelines::PublicController < Api::BaseController
   after_action :insert_pagination_headers, unless: -> { @statuses.empty? }
-
+  before_action :require_user!, only: [:show]
   respond_to :json
 
   def show
