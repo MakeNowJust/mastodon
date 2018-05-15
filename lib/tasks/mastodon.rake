@@ -2,6 +2,8 @@
 
 require 'optparse'
 require 'colorize'
+require 'tty-command'
+require 'tty-prompt'
 
 namespace :mastodon do
   desc 'Configure the instance for production use'
@@ -109,7 +111,7 @@ namespace :mastodon do
 
         env['REDIS_PASSWORD'] = prompt.ask('Redis password:') do |q|
           q.required false
-          a.default nil
+          q.default nil
           q.modify :strip
         end
 
