@@ -1,6 +1,6 @@
 import EXIF from 'exif-js';
 
-const MAX_IMAGE_DIMENSION = 1280;
+const MAX_IMAGE_PIXELS = 1638400; // 1280x1280px
 
 const getImageUrl = inputFile => new Promise((resolve, reject) => {
   if (window.URL && URL.createObjectURL) {
@@ -44,36 +44,25 @@ const getOrientation = (img, type = 'image/png') => new Promise(resolve => {
 
 const processImage = (img, { width, height, orientation, type = 'image/png' }) => new Promise(resolve => {
   const canvas  = document.createElement('canvas');
-  [canvas.width, canvas.height] = orientation < 5 ? [width, height] : [height, width];
+
+  if (4 < orientation && orientation < 9) {
+    canvas.width  = height;
+    canvas.height = width;
+  } else {
+    canvas.width  = width;
+    canvas.height = height;
+  }
 
   const context = canvas.getContext('2d');
 
   switch (orientation) {
-  case 2:
-    context.translate(width, 0);
-    break;
-  case 3:
-    context.translate(width, height);
-    break;
-  case 4:
-    context.translate(0, height);
-    break;
-  case 5:
-    context.rotate(0.5 * Math.PI);
-    context.translate(1, -1);
-    break;
-  case 6:
-    context.rotate(0.5 * Math.PI);
-    context.translate(0, -height);
-    break;
-  case 7:
-    context.rotate(0.5, Math.PI);
-    context.translate(width, -height);
-    break;
-  case 8:
-    context.rotate(-0.5, Math.PI);
-    context.translate(-width, 0);
-    break;
+  case 2: context.transform(-1, 0, 0, 1, width, 0); break;
+  case 3: context.transform(-1, 0, 0, -1, width, height); break;
+  case 4: context.transform(1, 0, 0, -1, 0, height); break;
+  case 5: context.transform(0, 1, 1, 0, 0, 0); break;
+  case 6: context.transform(0, 1, -1, 0, height, 0); break;
+  case 7: context.transform(0, -1, -1, 0, height, width); break;
+  case 8: context.transform(0, -1, 1, 0, 0, width); break;
   }
 
   context.drawImage(img, 0, 0, width, height);
@@ -84,18 +73,8 @@ const processImage = (img, { width, height, orientation, type = 'image/png' }) =
 const resizeImage = (img, type = 'image/png') => new Promise((resolve, reject) => {
   const { width, height } = img;
 
-  let newWidth, newHeight;
-
-  if (width > height) {
-    newHeight = height * MAX_IMAGE_DIMENSION / width;
-    newWidth  = MAX_IMAGE_DIMENSION;
-  } else if (height > width) {
-    newWidth  = width * MAX_IMAGE_DIMENSION / height;
-    newHeight = MAX_IMAGE_DIMENSION;
-  } else {
-    newWidth  = MAX_IMAGE_DIMENSION;
-    newHeight = MAX_IMAGE_DIMENSION;
-  }
+  const newWidth  = Math.round(Math.sqrt(MAX_IMAGE_PIXELS * (width / height)));
+  const newHeight = Math.round(Math.sqrt(MAX_IMAGE_PIXELS * (height / width)));
 
   getOrientation(img, type)
     .then(orientation => processImage(img, {
@@ -115,7 +94,7 @@ export default inputFile => new Promise((resolve, reject) => {
   }
 
   loadImage(inputFile).then(img => {
-    if (img.width < MAX_IMAGE_DIMENSION && img.height < MAX_IMAGE_DIMENSION) {
+    if (img.width * img.height < MAX_IMAGE_PIXELS) {
       resolve(inputFile);
       return;
     }

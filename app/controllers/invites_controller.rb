@@ -8,10 +8,10 @@ class InvitesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    authorize :invite, :index?
+    authorize :invite, :create?
 
     @invites = invites
-    @invite  = Invite.new(expires_in: 1.day.to_i)
+    @invite  = Invite.new
   end
 
   def create
@@ -38,10 +38,10 @@ class InvitesController < ApplicationController
   private
 
   def invites
-    Invite.where(user: current_user)
+    Invite.where(user: current_user).order(id: :desc)
   end
 
   def resource_params
-    params.require(:invite).permit(:max_uses, :expires_in)
+    params.require(:invite).permit(:max_uses, :expires_in, :autofollow)
   end
 end
