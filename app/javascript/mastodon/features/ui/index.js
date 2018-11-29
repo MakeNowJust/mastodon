@@ -59,7 +59,8 @@ const messages = defineMessages({
 
 const mapStateToProps = state => ({
   isComposing: state.getIn(['compose', 'is_composing']),
-  hasComposingText: state.getIn(['compose', 'text']) !== '',
+  hasComposingText: state.getIn(['compose', 'text']).trim().length !== 0,
+  hasMediaAttachments: state.getIn(['compose', 'media_attachments']).size > 0,
   dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
 });
 
@@ -89,6 +90,7 @@ const keyMap = {
   goToProfile: 'g u',
   goToBlocked: 'g b',
   goToMuted: 'g m',
+  goToRequests: 'g r',
   toggleHidden: 'x',
 };
 
@@ -176,7 +178,7 @@ class SwitchingColumnsArea extends React.PureComponent {
           <WrappedRoute path='/blocks' component={Blocks} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
           <WrappedRoute path='/domain_blocks' component={DomainBlocks} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
           <WrappedRoute path='/mutes' component={Mutes} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
-          <WrappedRoute path='/lists' component={Lists} content={children} />
+          <WrappedRoute path='/lists' component={Lists} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
           <WrappedRoute component={GenericNotFound} content={children} />
         </WrappedSwitch>
@@ -186,10 +188,10 @@ class SwitchingColumnsArea extends React.PureComponent {
 
 }
 
-@connect(mapStateToProps)
+export default @connect(mapStateToProps)
 @injectIntl
 @withRouter
-export default class UI extends React.PureComponent {
+class UI extends React.PureComponent {
 
   static contextTypes = {
     router: PropTypes.object.isRequired,
@@ -200,6 +202,7 @@ export default class UI extends React.PureComponent {
     children: PropTypes.node,
     isComposing: PropTypes.bool,
     hasComposingText: PropTypes.bool,
+    hasMediaAttachments: PropTypes.bool,
     location: PropTypes.object,
     intl: PropTypes.object.isRequired,
     dropdownMenuIsOpen: PropTypes.bool,
@@ -210,9 +213,9 @@ export default class UI extends React.PureComponent {
   };
 
   handleBeforeUnload = (e) => {
-    const { intl, isComposing, hasComposingText } = this.props;
+    const { intl, isComposing, hasComposingText, hasMediaAttachments } = this.props;
 
-    if (isComposing && hasComposingText) {
+    if (isComposing && (hasComposingText || hasMediaAttachments)) {
       // Setting returnValue to any string causes confirmation dialog.
       // Many browsers no longer display this text to users,
       // but we set user-friendly message for other browsers, e.g. Edge.
@@ -427,6 +430,10 @@ export default class UI extends React.PureComponent {
     this.context.router.history.push('/mutes');
   }
 
+  handleHotkeyGoToRequests = () => {
+    this.context.router.history.push('/follow_requests');
+  }
+
   render () {
     const { draggingOver } = this.state;
     const { children, isComposing, location, dropdownMenuIsOpen } = this.props;
@@ -449,10 +456,11 @@ export default class UI extends React.PureComponent {
       goToProfile: this.handleHotkeyGoToProfile,
       goToBlocked: this.handleHotkeyGoToBlocked,
       goToMuted: this.handleHotkeyGoToMuted,
+      goToRequests: this.handleHotkeyGoToRequests,
     };
 
     return (
-      <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef}>
+      <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
         <div className={classNames('ui', { 'is-composing': isComposing })} ref={this.setRef} style={{ pointerEvents: dropdownMenuIsOpen ? 'none' : null }}>
           <TabsBar />
 

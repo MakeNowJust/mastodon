@@ -6,7 +6,7 @@ class Auth::SessionsController < Devise::SessionsController
   layout 'auth'
 
   skip_before_action :require_no_authentication, only: [:create]
-  skip_before_action :check_suspension, only: [:destroy]
+  skip_before_action :check_user_permissions, only: [:destroy]
   prepend_before_action :authenticate_with_two_factor, if: :two_factor_enabled?, only: [:create]
   before_action :set_instance_presenter, only: [:new]
   before_action :set_body_classes
@@ -27,8 +27,10 @@ class Auth::SessionsController < Devise::SessionsController
   end
 
   def destroy
+    tmp_stored_location = stored_location_for(:user)
     super
     flash.delete(:notice)
+    store_location_for(:user, tmp_stored_location) if continue_after?
   end
 
   protected
@@ -120,5 +122,9 @@ class Auth::SessionsController < Devise::SessionsController
       paths << short_account_path(username: resource.account)
     end
     paths
+  end
+
+  def continue_after?
+    truthy_param?(:continue)
   end
 end
