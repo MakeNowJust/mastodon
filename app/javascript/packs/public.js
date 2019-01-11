@@ -1,3 +1,4 @@
+import escapeTextContentForBrowser from 'escape-html';
 import loadPolyfills from '../mastodon/load_polyfills';
 import ready from '../mastodon/ready';
 import { start } from '../mastodon/common';
@@ -31,6 +32,17 @@ function main() {
   const ReactDOM = require('react-dom');
   const Rellax = require('rellax');
   const createHistory = require('history').createBrowserHistory;
+
+  const scrollToDetailedStatus = () => {
+    const history = createHistory();
+    const detailedStatuses = document.querySelectorAll('.public-layout .detailed-status');
+    const location = history.location;
+
+    if (detailedStatuses.length === 1 && (!location.state || !location.state.scrolledToDetailedStatus)) {
+      detailedStatuses[0].scrollIntoView();
+      history.replace(location.pathname, { ...location.state, scrolledToDetailedStatus: true });
+    }
+  };
 
   ready(() => {
     const locale = document.documentElement.lang;
@@ -75,23 +87,20 @@ function main() {
 
           ReactDOM.render(<MediaContainer locale={locale} components={reactComponents} />, content);
           document.body.appendChild(content);
+          scrollToDetailedStatus();
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+          console.error(error);
+          scrollToDetailedStatus();
+        });
+    } else {
+      scrollToDetailedStatus();
     }
 
     const parallaxComponents = document.querySelectorAll('.parallax');
 
     if (parallaxComponents.length > 0 ) {
       new Rellax('.parallax', { speed: -1 });
-    }
-
-    const history = createHistory();
-    const detailedStatuses = document.querySelectorAll('.public-layout .detailed-status');
-    const location = history.location;
-
-    if (detailedStatuses.length === 1 && (!location.state || !location.state.scrolledToDetailedStatus)) {
-      detailedStatuses[0].scrollIntoView();
-      history.replace(location.pathname, { ...location.state, scrolledToDetailedStatus: true });
     }
   });
 
@@ -133,9 +142,12 @@ function main() {
 
   delegate(document, '#account_display_name', 'input', ({ target }) => {
     const name = document.querySelector('.card .display-name strong');
-
     if (name) {
-      name.innerHTML = emojify(target.value);
+      if (target.value) {
+        name.innerHTML = emojify(escapeTextContentForBrowser(target.value));
+      } else {
+        name.textContent = document.querySelector('#default_account_display_name').textContent;
+      }
     }
   });
 
