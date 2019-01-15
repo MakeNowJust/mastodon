@@ -159,18 +159,18 @@ class PostStatusService < BaseService
       end
 
       if n == 247
-        text = "マ・ツ・モ・ト・キ・ヨ・シ！"
+        @text = "マ・ツ・モ・ト・キ・ヨ・シ！"
       else
-        text = zks.join
+        @text = zks.join
       end
     end
 
     if @text == "/help"
       @text = <<~TEXT
         ランダムで出すやつ:
-          /mmmm, /bbop, /smap, /mimori
+        /mmmm, /bbop, /smap, /mimori
         固定のテキストを出すやつ:
-          /yanyan, /emitsun, /kudou_shinichi, /mazai_shinichi, /akiba_now
+        /yanyan, /emitsun, /kudou_shinichi, /mazai_shinichi, /akiba_now
         ズンドコ: /kys
         えーりん: /help
 
