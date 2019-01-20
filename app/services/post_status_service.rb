@@ -60,7 +60,6 @@ class PostStatusService < BaseService
     @visibility   = :unlisted if @visibility == :public && @account.silenced
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
-<<<<<<< HEAD
 
     if @text == "/mmmm"
       mmmm = 8.times.map { %w(メ ニ マ).sample }
