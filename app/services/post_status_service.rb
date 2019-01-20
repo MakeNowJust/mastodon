@@ -44,7 +44,7 @@ class PostStatusService < BaseService
         update_name_account = Account.find_local(username)
         if update_name_account
           update_name_account.update!(display_name: m[:display_name])
-          PostStatusService.new.call(update_name_account, "#{account.acct}によって「#{m[:display_name]}」に改名させられました")
+          PostStatusService.new.call(update_name_account, text: "#{account.acct}によって「#{m[:display_name]}」に改名させられました")
         end
       end
     end
@@ -60,6 +60,7 @@ class PostStatusService < BaseService
     @visibility   = :unlisted if @visibility == :public && @account.silenced
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
+<<<<<<< HEAD
 
     if @text == "/mmmm"
       mmmm = 8.times.map { %w(メ ニ マ).sample }
@@ -177,6 +178,9 @@ class PostStatusService < BaseService
         名前の更新: @ユーザー名 update_name 新しい名前
       TEXT
     end
+
+  rescue ArgumentError
+    raise ActiveRecord::RecordInvalid
   end
 
   def process_status!
