@@ -3,6 +3,7 @@ import Motion from '../features/ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Icon from 'mastodon/components/icon';
 
 export default class IconButton extends React.PureComponent {
 
@@ -74,8 +75,6 @@ export default class IconButton extends React.PureComponent {
       overlayed: overlay,
     });
 
-    const iconClass = fontGrandOrder ? `fgo fgo-${icon}` : `fa fa-fw fa-${icon}`;
-
     if (!animate) {
       // Perf optimization: avoid unnecessary <Motion> components unless
       // we actually need to animate.
@@ -90,7 +89,7 @@ export default class IconButton extends React.PureComponent {
           style={style}
           tabIndex={tabIndex}
         >
-          <i className={iconClass} aria-hidden='true' />
+          <Icon id={icon} fontGrandOrder={fontGrandOrder} fixedWidth aria-hidden='true' />
         </button>
       );
     }
@@ -108,7 +107,11 @@ export default class IconButton extends React.PureComponent {
             style={style}
             tabIndex={tabIndex}
           >
+<<<<<<< HEAD
             <i style={{ transform: `rotate(${rotate}deg)` }} className={iconClass} aria-hidden='true' />
+=======
+            <Icon id={icon} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />
+>>>>>>> master
           </button>
         )}
       </Motion>
