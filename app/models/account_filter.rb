@@ -1,6 +1,21 @@
 # frozen_string_literal: true
 
 class AccountFilter
+  KEYS = %i(
+    local
+    remote
+    by_domain
+    active
+    pending
+    silenced
+    suspended
+    username
+    display_name
+    email
+    ip
+    staff
+  ).freeze
+
   attr_reader :params
 
   def initialize(params)
@@ -22,7 +37,7 @@ class AccountFilter
 
   def set_defaults!
     params['local']  = '1' if params['remote'].blank?
-    params['active'] = '1' if params['suspended'].blank? && params['silenced'].blank?
+    params['active'] = '1' if params['suspended'].blank? && params['silenced'].blank? && params['pending'].blank?
   end
 
   def scope_for(key, value)
@@ -35,6 +50,10 @@ class AccountFilter
       Account.where(domain: value)
     when 'active'
       Account.without_suspended
+    when 'pending'
+      accounts_with_users.merge User.pending
+    when 'disabled'
+      accounts_with_users.merge User.disabled
     when 'silenced'
       Account.silenced
     when 'suspended'
@@ -46,7 +65,7 @@ class AccountFilter
     when 'email'
       accounts_with_users.merge User.matches_email(value)
     when 'ip'
-      valid_ip?(value) ? accounts_with_users.where('users.current_sign_in_ip <<= ?', value) : Account.none
+      valid_ip?(value) ? accounts_with_users.merge(User.matches_ip(value)) : Account.none
     when 'staff'
       accounts_with_users.merge User.staff
     else
