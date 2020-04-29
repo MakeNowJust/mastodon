@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::Timelines::PublicController < Api::BaseController
-  before_action :require_user!, only: [:show], if: :require_auth?
-  after_action :insert_pagination_headers, unless: -> { @statuses.empty? }
   before_action :require_user!, only: [:show]
-  respond_to :json
+  after_action :insert_pagination_headers, unless: -> { @statuses.empty? }
 
   def show
     @statuses = load_statuses
